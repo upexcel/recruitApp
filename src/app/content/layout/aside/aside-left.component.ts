@@ -97,7 +97,8 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 				},
 				{
 					title: 'Company Profile',
-					bullet: 'dot'
+					bullet: 'dot',
+					page: '/settings/company-profile',
 				},
 				{
 					title: 'Users List',
@@ -106,15 +107,18 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 				},
 				{
 					title: 'Users Log',
-					bullet: 'dot'
+					bullet: 'dot',
+					page: '/settings/user-activity-log'
 				},
 				{
 					title: 'Email Logs',
-					bullet: 'dot'
+					bullet: 'dot',
+					page: '/settings/email-logs',
 				},
 				{
 					title: 'Reset Password',
-					bullet: 'dot'
+					bullet: 'dot',
+					page: '/settings/reset-password'
 				},
 				{
 					title: 'Spam',

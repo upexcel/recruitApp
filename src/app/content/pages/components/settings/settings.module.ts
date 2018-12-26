@@ -18,7 +18,19 @@ import { SlackInfoComponent } from './slack-info/slack-info.component';
 import { SlackComponentFormComponent } from './slack-component-form/slack-component-form.component';
 import { EmailTemplatesComponent } from './email-templates/email-templates.component'
 import { TagSettingComponent } from './tag-setting/tag-setting.component';
-import { MatProgressSpinnerModule, MatDialogModule, MatSelectModule, MatPaginatorModule, MatTableModule, MatSlideToggle, MatSlideToggleModule, MatChipsModule } from '@angular/material';
+import {
+	MatProgressSpinnerModule,
+	MatDialogModule,
+	MatSelectModule,
+	MatPaginatorModule,
+	MatTableModule,
+	MatSlideToggle,
+	MatSlideToggleModule,
+	MatChipsModule,
+	MatGridListModule,
+	MatListModule,
+	MatMenuModule
+} from '@angular/material';
 import { PartialsModule } from '../../../partials/partials.module';
 import { ManualTagComponent } from './tag-setting/modal/manual-tag/manual-tag.component';
 import { UserListComponent } from './user-list/user-list.component';
@@ -27,9 +39,14 @@ import { ConfirmationDialogComponent } from './model/confirmation-dialog.compone
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { AutoMaticTagComponent } from './auto-matic-tag/auto-matic-tag.component';
 import { AddNewUserComponent } from './add-new-user/add-new-user.component';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { UserActivityLogComponent } from './user-activity-log/user-activity-log.component';
+import { RemoveOldLogsComponent } from './remove-old-logs/remove-old-logs.component';
+import { EmailLogsComponent } from './email-logs/email-logs.component';
+import { SetvaremailpreviewComponent } from './setVarEmailPreview/setVarEmailPreview.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 @NgModule({
 	imports: [
-
 		MatIconModule,
 		MatCardModule,
 		FormsModule,
@@ -55,6 +72,9 @@ import { AddNewUserComponent } from './add-new-user/add-new-user.component';
 		FormsModule,
 		MatCardModule,
 		CommonModule,
+		MatGridListModule,
+		MatMenuModule,
+		MatListModule,
 		RouterModule.forChild([
 			{
 				path: '',
@@ -96,6 +116,22 @@ import { AddNewUserComponent } from './add-new-user/add-new-user.component';
 					{
 						path: 'add-user',
 						component: AddNewUserComponent
+					},
+					{
+						path: 'company-profile',
+						component: CompanyProfileComponent
+					},
+					{
+						path: 'user-activity-log',
+						component: UserActivityLogComponent
+					},
+					{
+						path: 'email-logs',
+						component: EmailLogsComponent
+					},
+					{
+						path: 'reset-password',
+						component: ResetPasswordComponent
 					}
 
 				]
@@ -105,7 +141,9 @@ import { AddNewUserComponent } from './add-new-user/add-new-user.component';
 	providers: [],
 	entryComponents: [
 		ManualTagComponent,
-		ConfirmationDialogComponent
+		ConfirmationDialogComponent,
+		RemoveOldLogsComponent,
+		SetvaremailpreviewComponent
 	],
 	declarations: [
 		ImapComponentFormComponent,
@@ -124,7 +162,13 @@ import { AddNewUserComponent } from './add-new-user/add-new-user.component';
 		AutoMaticTagComponent,
 		ConfirmationDialogComponent,
 		AddTagComponent,
-		AddNewUserComponent
+		AddNewUserComponent,
+		CompanyProfileComponent,
+		UserActivityLogComponent,
+		RemoveOldLogsComponent,
+		EmailLogsComponent,
+		SetvaremailpreviewComponent,
+		ResetPasswordComponent
 	]
 })
 export class SettingsModule { }

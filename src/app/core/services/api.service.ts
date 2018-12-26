@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { config } from '../../config/config';
 
 @Injectable({
     providedIn: 'root'
@@ -164,25 +165,15 @@ export class ApiService {
     //             return Observable.throw(error || 'Server error');
     //         });
     // }
-    // getEmailLogs(body): Observable<any> {
-    //     this.increaseAPiCount();
-    //     let url: any;
-    //     if (body['email']) {
-    //         url = `search/email/logs/${body.email}/${body.page}/${body.limit}`;
-    //     } else {
-    //         url = `get/email/logs/${body.page}/${body.limit}`;
-    //     }
-    //     return this.http.get(environment['apibase'] + url)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async getEmailLogs(body) {
+        let url: any;
+        if (body['email']) {
+            url = `search/email/logs/${body.email}/${body.page}/${body.limit}`;
+        } else {
+            url = `get/email/logs/${body.page}/${body.limit}`;
+        }
+        return await this.http.get(this.updateUrl(`${this.API_URL}/${url}`)).toPromise();
+    }
     async getUserList(body) {
         return await this.http.get(this.updateUrl(`${this.API_URL}/user/list/${body.page}/${body.limit}`)).toPromise();
     }
@@ -312,32 +303,14 @@ export class ApiService {
     async addUser(body: any) {
         return await this.http.post(this.updateUrl(`${this.API_URL}/user/add_user`), body).toPromise();
     }
-    // sendEmail(body: any): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.post(environment['apibase'] + 'email/sendtomany', body)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
-    // sendToNotReplied(body: any): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.post(environment['apibase'] + 'sendToNotReplied', body)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+
+    async sendEmail(body: any): Promise<any> {
+        return await this.http.post(this.updateUrl(environment['apibase'] + 'email/sendtomany'), body);
+    }
+
+    async sendToNotReplied(body: any): Promise<any> {
+        return await this.http.post(this.updateUrl(environment['apibase'] + 'sendToNotReplied'), body).toPromise();
+    }
     // UnreadStatus(body: any): Observable<any> {
     //     this.increaseAPiCount();
     //     return this.http.put(environment['apibase'] + `email/changeUnreadStatus/${body.mongo_id}/${body.status}`, body)
@@ -364,19 +337,11 @@ export class ApiService {
     //             return Observable.throw(error || 'Server error');
     //         });
     // }
-    // resetPassword(body: any): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.put(environment['apibase'] + `account/update_password`, body)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+
+    async resetPassword(body: any): Promise<any> {
+        return await this.http.put(this.updateUrl(environment['apibase'] + `account/update_password`), body).toPromise();
+    }
+
     // emailAttachment(id: string): Observable<any> {
     //     this.increaseAPiCount();
     //     return this.http.put(environment['apibase'] + `email/mailAttachment/${id}`)
@@ -456,19 +421,10 @@ export class ApiService {
         return await this.http.delete(this.updateUrl(`${this.API_URL}/user/delete/${id}`)).toPromise();
     }
 
-    // getHistory(body): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.get(environment['apibase'] + `user/log/${body.email}`)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async getHistory(body) {
+        return await this.http.get(this.updateUrl(`${this.API_URL}/user/log/${body.email}`)).toPromise();
+    }
+
     getUserVariable(): Observable<any> {
         this.increaseAPiCount();
         return this.http.get(this.updateUrl(environment['apibase'] + 'variable/get/1/20'))
@@ -582,45 +538,18 @@ export class ApiService {
                 return Observable.throw(error || 'Server error');
             });
     }
-    // sendTestEmail(userDetail: any, body: any): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.post(environment['apibase'] + `template/email/${userDetail.CandidateEmail}`, body)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
-    // sendEmailBySeclection(body: any): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.post(environment['apibase'] + `email/by_seclection`, body)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
-    // resendEmailForTracking(body: any): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.put(environment['apibase'] + 'send/sendEmailToNotviewed', body)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async sendTestEmail(userDetail: any, body: any): Promise<any> {
+        return await this.http.post(this.updateUrl(environment['apibase'] + `template/email/${userDetail.CandidateEmail}`), body)
+            .toPromise();
+    }
+
+    async sendEmailBySeclection(body: any): Promise<any> {
+        return await this.http.post(this.updateUrl(environment['apibase'] + `email/by_seclection`), body);
+    }
+
+    async resendEmailForTracking(body: any): Promise<any> {
+        return await this.http.put(this.updateUrl(environment['apibase'] + 'send/sendEmailToNotviewed'), body).toPromise();
+    }
     async activateImap(email_id: string) {
         return await this.http.put(this.updateUrl(`${this.API_URL}/imap/statusActive/${email_id}`), {}).toPromise();
     }
@@ -634,7 +563,6 @@ export class ApiService {
             .catch((error: any) => {
                 this.count = 0;
                 this.apiEndEvent.emit();
-                console.log("error", error)
                 return Observable.throw(error || 'Server error');
             });
     }
@@ -1347,19 +1275,10 @@ export class ApiService {
     //             return Observable.throw(error || 'Server error');
     //         });
     // }
-    // removeOldlogs(body): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.delete(environment['apibase'] + `user/deleteLogs/${body['userId']}/${body['start']}/${body['end']}`)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async removeOldlogs(body) {
+        return await this.http.delete(this.updateUrl(`${this.API_URL}/user/deleteLogs/${body['userId']}/${body['start']}/${body['end']}`))
+            .toPromise();
+    }
     // getAllTestPaper(): Observable<any> {
     //     this.increaseAPiCount();
     //     return this.http.get(environment['apibase'] + `exams/getTestPapers`)
@@ -1439,45 +1358,15 @@ export class ApiService {
     //         });
     // }
 
-    // getCompanyProfile(): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.get(environment['apibase'] + `tag/getCompanyProfile/${config.companyProfileId}`)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async getCompanyProfile() {
+        return await this.http.get(this.updateUrl(`${this.API_URL}/tag/getCompanyProfile/${config.companyProfileId}`)).toPromise();
+    }
 
-    // addCompanyProfile(apiData): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.post(environment['apibase'] + `tag/addCompanyProfile`, apiData)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async addCompanyProfile(apiData) {
+        return await this.http.post(this.updateUrl(`${this.API_URL}/tag/addCompanyProfile`), apiData).toPromise();
+    }
 
-    // updateCompanyProfile(id, apiData): Observable<any> {
-    //     this.increaseAPiCount();
-    //     return this.http.post(environment['apibase'] + `tag/updateCompanyProfile/${id}`, apiData)
-    //         .map((res: Response) => {
-    //             this.decreaseAPiCount();
-    //             return res;
-    //         })
-    //         .catch((error: any) => {
-    //             this.count = 0;
-    //             this.apiEndEvent.emit();
-    //             return Observable.throw(error || 'Server error');
-    //         });
-    // }
+    async updateCompanyProfile(id, apiData) {
+        return await this.http.post(this.updateUrl(`${this.API_URL}/tag/updateCompanyProfile/${id}`), apiData).toPromise();
+    }
 }
